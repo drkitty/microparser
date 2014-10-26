@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-#from contextlib import contextmanager
-
 from stream import End, Invalid, Stream
 
 
@@ -45,6 +43,9 @@ def main():
         except EOFError:
             return
         print(parse(line, group))
+        rest = ''.join(line.i)
+        if rest:
+            print("Warning: Trailing characters: '{}'".format(rest))
 
 
 if __name__ == '__main__':
