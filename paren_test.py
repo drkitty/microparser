@@ -1,25 +1,7 @@
 #!/usr/bin/env python3
 
+from parser import parse, test
 from stream import End, Invalid, Stream
-
-
-def parse(s, *fs, exc=Invalid):
-    for f in fs:
-        try:
-            with s as ss:
-                return f(ss)
-        except Invalid:
-            pass
-    raise exc()
-
-
-def test(cond):
-    def inner(s):
-        c = s.get()
-        if not cond(c):
-            raise Invalid()
-        return c
-    return inner
 
 
 def group(s):
@@ -28,7 +10,7 @@ def group(s):
     g = []
     try:
         while True:
-            g.append(parse(s, group, test(lambda c: c == ' '), exc=End))
+            g.append(parse(s, group, test(lambda c: c not in '()'), exc=End))
     except End:
         pass
     if s.get() != ')':
