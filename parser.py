@@ -11,7 +11,7 @@ def parse(s, *fs, exc=Invalid):
     raise exc()
 
 
-def test(cond):
+def char(cond):
     def inner(s):
         c = s.get()
         if c is None or not cond(c):

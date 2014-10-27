@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from parser import parse, test
+from parser import parse, char
 from stream import End, Invalid, Stream
 
 
@@ -10,7 +10,7 @@ def group(s):
     g = []
     try:
         while True:
-            g.append(parse(s, group, test(lambda c: c not in '()'), exc=End))
+            g.append(parse(s, group, char(lambda c: c not in '()'), exc=End))
     except End:
         pass
     if s.get() != ')':
