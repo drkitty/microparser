@@ -19,15 +19,14 @@ def group(s):
 
 
 def main():
-    while True:
-        try:
-            line = Stream(input('> '))
-        except EOFError:
-            return
-        print(parse(line, group))
-        rest = ''.join(line.i)
-        if rest:
-            print("Warning: Trailing characters: '{}'".format(rest))
+    try:
+        line = Stream(input())
+    except EOFError:
+        return
+    print(parse(line, group))
+    rest = ''.join(line.i)
+    if rest:
+        print("Warning: Trailing characters: '{}'".format(rest))
 
 
 if __name__ == '__main__':
