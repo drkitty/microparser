@@ -14,7 +14,7 @@ def parse(s, *fs, exc=Invalid):
 def test(cond):
     def inner(s):
         c = s.get()
-        if not cond(c):
+        if c is None or not cond(c):
             raise Invalid()
         return c
     return inner
