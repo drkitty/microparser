@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-from parser import parse, char
-from stream import End, Invalid, Stream
+from parser import End, char, Invalid, parse, Stream
 
 
 def group(s):
