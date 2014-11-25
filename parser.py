@@ -14,34 +14,55 @@ class End(Exception):
 class Stream(object):
     def __init__(self, iterable=None):
         self.b = []  # backtrackable chars
-        self.u = []  # ungot chars
+        self.q = []  # queue
         if iterable is None:
             self.i = None
         else:
             self.i = iter(iterable)
 
+    def next(self):
+        return next(self.i, None)
+
     def get(self):
-        if self.u:
-            c = self.u.pop(0)
+        if self.q:
+            c = self.q.pop(0)
         else:
-            c = next(self.i, None)
+            c = self.next()
         if c is not None:
             self.b.append(c)
-        #print_stack(limit=2)
-        print("... get {}".format(repr(c)))
         return c
 
     def __enter__(self):
-        dup = Stream()
+        dup = self.__class__()
         dup.i = self.i
-        dup.u = self.u
+        dup.q = self.q
         self.child = dup
         return dup
 
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_type in (End, Invalid):
-            print("... unget '{}'".format(''.join(self.child.b)))
-            self.u.extend(self.child.b)
+            self.q.extend(self.child.b)
+
+
+class FileStream(Stream):
+    def __init__(self, filename=None):
+        if filename is None:
+            f = None
+        else:
+            f = open(filename, 'r')
+        super().__init__(f)
+
+
+    def fetch_line(self):
+        line = next(self.i, None)
+        if line is None:
+            return
+        for c in line:
+            self.q.append(c)
+
+    def next(self):
+        self.fetch_line()
+        return self.q.pop(0)
 
 
 def parse(s, *fs, exc=Invalid):
