@@ -4,4 +4,7 @@ from unittest import TestLoader
 
 
 if __name__ == '__main__':
-    TestLoader().discover('tests').debug()
+    runner = TestLoader().discover('tests')
+    print('Running {} tests...'.format(runner.countTestCases()))
+    runner.debug()
+    print('All tests passed.')
