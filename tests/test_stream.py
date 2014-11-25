@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from stream import End, Invalid, Stream
+from parser import End, Invalid, Stream
 
 
 class StreamTests(TestCase):
