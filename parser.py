@@ -16,7 +16,7 @@ class Stream(object):
         self.b = []  # backtrackable chars
         self.q = []  # queue
         if iterable is None:
-            self.i = None
+            self.i = iter(())
         else:
             self.i = iter(iterable)
 
@@ -41,7 +41,8 @@ class Stream(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_type in (End, Invalid):
-            self.q.extend(self.child.b)
+            self.child.b.extend(self.q)
+            self.q = self.child.b
 
 
 class FileStream(Stream):
