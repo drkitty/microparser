@@ -20,11 +20,11 @@ class StreamTests(TestCase):
             with ss as sss:
                 self.assertEqual(sss.get(), '0')
                 self.assertEqual(sss.get(), '1')
-            self.assertEqual(sss.get(), '2')
-            self.assertEqual(sss.get(), '3')
-        self.assertEqual(sss.get(), '4')
-        self.assertEqual(sss.get(), '5')
-        self.assertEqual(sss.get(), None)
+            self.assertEqual(ss.get(), '2')
+            self.assertEqual(ss.get(), '3')
+        self.assertEqual(s.get(), '4')
+        self.assertEqual(s.get(), '5')
+        self.assertEqual(s.get(), None)
 
     def test_context_manager_invalid(self):
         s = Stream('012345')
