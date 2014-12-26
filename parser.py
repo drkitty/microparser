@@ -40,6 +40,7 @@ class Stream(object):
         return dup
 
     def __exit__(self, exc_type, exc_value, traceback):
+        self.q = self.child.q
         if exc_type in (End, Invalid):
             self.child.b.extend(self.q)
             self.q = self.child.b
