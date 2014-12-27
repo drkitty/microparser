@@ -32,6 +32,15 @@ class Stream(object):
             self.b.append(c)
         return c
 
+    def parse(self, *fs, exc=Invalid):
+        for f in fs:
+            try:
+                with self as ss:
+                    return f(ss)
+            except Invalid:
+                pass
+        raise exc()
+
     def __enter__(self):
         dup = self.__class__()
         dup.i = self.i
@@ -66,15 +75,6 @@ class FileStream(Stream):
         self.fetch_line()
         return self.q.pop(0)
 
-
-def parse(s, *fs, exc=Invalid):
-    for f in fs:
-        try:
-            with s as ss:
-                return f(ss)
-        except Invalid:
-            pass
-    raise exc()
 
 
 def char(cond):

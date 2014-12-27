@@ -2,7 +2,7 @@
 
 from unittest import TestCase
 
-from parser import End, char, Invalid, parse, Stream
+from parser import End, char, Invalid, Stream
 
 
 def group(s):
@@ -11,7 +11,7 @@ def group(s):
     g = []
     try:
         while True:
-            g.append(parse(s, group, char(lambda c: c not in '()'), exc=End))
+            g.append(s.parse(group, char(lambda c: c not in '()'), exc=End))
     except End:
         pass
     if s.get() != ')':
@@ -22,13 +22,13 @@ def group(s):
 class ParenTests(TestCase):
     def test_valid1(self):
         s = Stream('()')
-        self.assertEqual(parse(s, group), [])
+        self.assertEqual(s.parse(group), [])
 
     def test_valid2(self):
         s = Stream('(())')
-        self.assertEqual(parse(s, group), [[]])
+        self.assertEqual(s.parse(group), [[]])
 
     def test_valid3(self):
         s = Stream('(012(3456)7)')
         self.assertEqual(
-            parse(s, group), ['0', '1', '2', ['3', '4', '5', '6'], '7'])
+            s.parse(group), ['0', '1', '2', ['3', '4', '5', '6'], '7'])
